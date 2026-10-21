@@ -1,6 +1,6 @@
 # Strategic / Portfolio Risk & ESG Engine
 
-🚀 **[Live dashboard](https://YOUR-APP.streamlit.app)** · 📄 **[Project report (PDF)](Strategic_ESG_Project_Report.pdf)**
+🚀 **[Live dashboard](https://arjinasim-strategic-esg-risk-engine-appstreamlit-app-wmslpv.streamlit.app/)** · 📄 **[Project report (PDF)](Strategic_ESG_Project_Report.pdf)**
 
 An end-to-end **strategic / portfolio risk** engine with an **ESG and climate**
 layer: exposure **concentration** analytics (HHI, top-N, Gini), **rating
