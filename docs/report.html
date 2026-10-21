@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  @page { size: A4; margin: 18mm 17mm 16mm 17mm;
+    @bottom-center { content: counter(page) " / " counter(pages); font-size: 8pt; color: #90a4ae; } }
+  * { box-sizing: border-box; }
+  body { font-family: "DejaVu Sans", sans-serif; color: #1c2b36; font-size: 10.3pt; line-height: 1.5; }
+  h1 { color: #0d2538; font-size: 21pt; margin: 0 0 2pt; line-height: 1.15; }
+  .sub { color: #164e63; font-size: 11pt; font-weight: bold; margin: 0 0 2pt; }
+  .meta { color: #607d8b; font-size: 8.6pt; margin: 0 0 14pt; }
+  h2 { color: #0d2538; font-size: 13pt; margin: 18pt 0 5pt; padding-bottom: 3pt; border-bottom: 2px solid #164e63; }
+  h3 { color: #164e63; font-size: 10.8pt; margin: 12pt 0 3pt; }
+  p { margin: 0 0 7pt; text-align: justify; }
+  .lead { background: #f2f7f9; border-left: 3px solid #164e63; padding: 9pt 12pt; margin: 0 0 12pt; }
+  table { width: 100%; border-collapse: collapse; margin: 6pt 0 12pt; font-size: 9.2pt; }
+  th { background: #0d2538; color: #fff; text-align: left; padding: 5pt 8pt; font-weight: bold; }
+  td { padding: 4.5pt 8pt; border-bottom: 1px solid #e3e9ec; }
+  tr:nth-child(even) td { background: #f7fafb; }
+  .num { text-align: right; font-variant-numeric: tabular-nums; }
+  .tot td { font-weight: bold; border-top: 2px solid #90a4ae; background: #eef4f6; }
+  figure { margin: 8pt 0 12pt; text-align: center; page-break-inside: avoid; }
+  figure img { width: 100%; max-width: 420pt; }
+  figcaption { color: #607d8b; font-size: 8.4pt; margin-top: 3pt; }
+  .tag { display: inline-block; background: #164e63; color: #fff; font-size: 7.6pt; padding: 1.5pt 6pt; border-radius: 3px; margin-right: 4pt; }
+  .foot { color: #607d8b; font-size: 8.4pt; font-style: italic; margin-top: 4pt; }
+  .pb { page-break-before: always; }
+  ul { margin: 0 0 8pt; padding-left: 16pt; }
+  li { margin-bottom: 3pt; }
+</style>
+</head>
+<body>
+
+<h1>Strategic / Portfolio Risk &amp; ESG Engine</h1>
+<p class="sub">Concentration, rating migration, ESG scoring and NGFS climate stress on a credit portfolio</p>
+<p class="meta">Portfolio project &middot; Nassim (ArjiNasim) &middot; October 2026 &middot; github.com/ArjiNasim/strategic-esg-risk-engine</p>
+
+<div class="lead">
+<p style="margin:0">This project builds the toolkit of a bank's strategic-risk function: the analytics
+that turn a whole book of exposures into a view for senior management. It measures where risk is
+concentrated, projects how the portfolio's credit quality will drift, scores the book on
+Environmental, Social and Governance risk, and stress-tests it against NGFS climate scenarios. All of
+it runs end to end and is shown in a public dashboard.</p>
+</div>
+
+<h2>1. Introduction</h2>
+<p>Individual deals are approved one at a time, but risk accumulates at the portfolio level: a
+concentration in one sector, a drift in average credit quality, an exposure to carbon-intensive
+borrowers. The strategic-risk function stands back from the single name and analyses the book as a
+whole, over time. This engine implements that view, from the portfolio up to a deployed dashboard,
+with an ESG and climate layer that supervisors increasingly require.</p>
+
+<h2>2. Context</h2>
+<p>Portfolio risk analytics are long-established: concentration indices, rating-migration matrices and
+multi-year default projection are the staples of a credit-portfolio review. What is newer, and
+explicitly called out in the mandate, is the <strong>ESG risk framework</strong> and climate stress
+testing. Supervisors now expect banks to measure their exposure to ESG-sensitive sectors and to
+stress their portfolios against the NGFS climate scenarios, separating transition risk (the cost of
+decarbonising) from physical risk (the cost of climate change itself). This project places the
+classic analytics and the ESG/climate layer side by side.</p>
+
+<h3>Mapping to the role</h3>
+<p>Each module answers a specific element of the offer's Strategic Risk Analyst mission:</p>
+<table>
+<tr><th>Mission</th><th>Module</th></tr>
+<tr><td>Portfolio reviews &amp; analytics over time</td><td>concentration + rating migration</td></tr>
+<tr><td>Evolution of portfolio dynamics</td><td>transition matrix, multi-year default</td></tr>
+<tr><td>Risk information for senior management</td><td>the 5-view dashboard</td></tr>
+<tr><td>Strengthen the ESG risk framework in APAC</td><td>ESG scoring + sensitive-sector exposure</td></tr>
+<tr><td>Forward-looking climate view</td><td>NGFS transition &amp; physical stress</td></tr>
+</table>
+
+<h2>3. Problem statement</h2>
+<p>The problem the project solves: <strong>given a bank's credit portfolio, show where it is
+concentrated, how its quality will evolve, how exposed it is to ESG risk, and what it loses under
+climate stress.</strong> Those four questions are the concentration analytics, the migration
+projection, the ESG score, and the NGFS stress test. The sections below answer each.</p>
+
+<h2>4. What was done</h2>
+<p>A Python engine of five modules, a test suite, a reproducible notebook, and a five-view dashboard:</p>
+<ul>
+<li><span class="tag">portfolio</span> A diversified APAC counterparty portfolio with sector, geography, rating and E/S/G scores.</li>
+<li><span class="tag">concentration</span> HHI and effective number, top-N share, Gini, by name, sector and geography.</li>
+<li><span class="tag">migration</span> A rating transition matrix, a one-year projection and multi-year cumulative default.</li>
+<li><span class="tag">esg</span> E/S/G composite scoring, risk bands, sensitive-sector exposure and top risk contributors.</li>
+<li><span class="tag">climate</span> NGFS transition and physical stress across Orderly, Disorderly and Hot House World.</li>
+</ul>
+<p>The engine is covered by <strong>19 unit tests</strong> (concentration bounds and monotonicity,
+transition-matrix rows summing to one, absorbing default, projection consistency, ESG weighting and
+bands, climate loss rising with the carbon price), and the dashboard is deployed publicly on Streamlit
+Cloud.</p>
+
+<h2 class="pb">5. How it works</h2>
+<p>The portfolio is a book of counterparties, each with an exposure, a sector, a geography, a rating
+and E/S/G sub-scores. Concentration is measured with the Herfindahl index (and its reciprocal, the
+effective number of equal names), the top-N share and the Gini coefficient, computed by name and by
+dimension so a sector or country concentration cannot hide behind a diversified average.</p>
+<p>Credit quality is projected with a through-the-cycle transition matrix: applying it to the current
+exposure-weighted rating distribution gives next year's distribution, and matrix powers give the
+cumulative default probability over several years. ESG is treated as a risk lens: the E/S/G scores are
+combined into a weighted composite, banded from Leader to High-risk, and the book's exposure to
+ESG-sensitive sectors is measured. Finally, the climate module follows the NGFS framing: a
+carbon-price shock lifts the default probability of carbon-intensive sectors (transition risk), while
+a geography hazard factor drives a value haircut (physical risk), and each scenario's loss is
+reported.</p>
+
+<h2>6. Results</h2>
+
+<h3>Concentration</h3>
+<p><em>Seeded portfolio: 200 counterparties, around 7.0bn EAD, 10 sectors, 8 APAC geographies.</em></p>
+<table>
+<tr><th>Measure</th><th class="num">Value</th></tr>
+<tr><td>HHI (name)</td><td class="num">0.015 (≈ 67 effective names)</td></tr>
+<tr><td>Top-10 share</td><td class="num">30.5%</td></tr>
+<tr><td>Gini</td><td class="num">0.553</td></tr>
+<tr class="tot"><td>HHI sector / geography</td><td class="num">0.13 / 0.14</td></tr>
+</table>
+<p>The book is well-diversified by effective number, but a visible single-name tail (the top ten names
+hold 30% of exposure) and a financials/industrials sector tilt are exactly what a concentration limit
+framework exists to monitor.</p>
+<figure><img src="chart_concentration.png"><figcaption>Exposure concentration by sector.</figcaption></figure>
+
+<h3>Rating migration</h3>
+<p>Projecting the book one year forward through the transition matrix gives a portfolio one-year
+default probability of <strong>1.6%</strong>, around 110M of expected EAD in default, rising to
+<strong>7.7% cumulative over five years</strong>. This is the forward evolution of credit quality the
+mandate asks to analyse.</p>
+<figure><img src="chart_migration.png"><figcaption>Rating distribution: current versus one-year projection.</figcaption></figure>
+
+<h3>ESG</h3>
+<p>The exposure-weighted ESG score is <strong>59 (Average)</strong>, with <strong>25% of EAD in
+ESG-sensitive sectors</strong> (oil and gas, mining, utilities, transport). The band breakdown shows
+where the ESG risk sits, and the engine ranks the names that contribute most (a low score on a large
+exposure).</p>
+<figure><img src="chart_esg.png"><figcaption>Exposure by ESG risk band.</figcaption></figure>
+
+<h3>Climate stress</h3>
+<p>Across the NGFS scenarios, the <strong>Hot House World</strong> is the worst at <strong>220M, 3.2%
+of EAD</strong>, driven by physical risk, while the <strong>Disorderly</strong> transition scenario
+drives the largest transition loss (61M). The trade-off is the central insight of a climate review:
+acting late on decarbonisation raises transition losses, while not acting at all raises physical
+losses.</p>
+<figure><img src="chart_climate.png"><figcaption>Climate stress loss by NGFS scenario, split into transition and physical.</figcaption></figure>
+
+<h2>7. Conclusion</h2>
+<p>The project answers the four questions it set. It shows <strong>where the portfolio is
+concentrated</strong> (67 effective names but a 30% top-ten tail), <strong>how its quality will
+drift</strong> (1.6% one-year default, 7.7% over five years), <strong>how exposed it is to ESG
+risk</strong> (score 59, a quarter of the book in sensitive sectors), and <strong>what it loses under
+climate stress</strong> (up to 3.2% of EAD). Together these are the strategic-risk function's core
+analytics, extended with the ESG and climate layer the mandate explicitly calls for. The natural next
+steps are counterparty-level ESG data and a full NGFS pathway model.</p>
+<p class="foot">Code, tests and the live dashboard: github.com/ArjiNasim/strategic-esg-risk-engine.
+Figures are reproduced in notebooks/01_strategic_esg.ipynb.</p>
+
+</body>
+</html>
